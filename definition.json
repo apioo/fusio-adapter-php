@@ -1,0 +1,5 @@
+{
+  "actionClass": [
+    "Fusio\\Adapter\\Php\\Action\\PhpProcessor"
+  ]
+}
