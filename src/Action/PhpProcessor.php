@@ -21,13 +21,11 @@
 
 namespace Fusio\Adapter\Php\Action;
 
-use Fusio\Engine\ActionAbstract;
 use Fusio\Engine\ContextInterface;
 use Fusio\Engine\Form\BuilderInterface;
 use Fusio\Engine\Form\ElementFactoryInterface;
 use Fusio\Engine\ParametersInterface;
 use Fusio\Engine\RequestInterface;
-use Fusio\Engine\ResponseInterface;
 
 /**
  * PhpProcessor

@@ -22,7 +22,6 @@
 namespace Fusio\Adapter\Php\Tests\Action;
 
 use Fusio\Adapter\Php\Action\PhpEngine;
-use Fusio\Adapter\Php\Action\PhpProcessor;
 use Fusio\Engine\Form\Builder;
 use Fusio\Engine\Form\Container;
 use Fusio\Engine\ResponseInterface;
