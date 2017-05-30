@@ -30,28 +30,51 @@ use Fusio\Engine\RequestInterface;
 use Fusio\Engine\ResponseInterface;
 
 /**
- * PhpProcessor
+ * PhpEngine
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.gnu.org/licenses/agpl-3.0
  * @link    http://fusio-project.org
  */
-class PhpProcessor extends PhpEngine
+class PhpEngine extends ActionAbstract
 {
-    public function getName()
+    /**
+     * @var string
+     */
+    protected $file;
+
+    public function __construct($file = null)
     {
-        return 'PHP-Processor';
+        $this->file = $file;
+    }
+
+    public function setFile($file)
+    {
+        $this->file = $file;
     }
 
     public function handle(RequestInterface $request, ParametersInterface $configuration, ContextInterface $context)
     {
-        $this->setFile($configuration->get('file'));
+        $resp = runScript($this->file, [
+            'request' => $request,
+            'context' => $context,
+            'connector' => $this->connector,
+            'response' => $this->response,
+            'processor' => $this->processor,
+            'logger' => $this->logger,
+            'cache' => $this->cache,
+        ]);
 
-        return parent::handle($request, $configuration, $context);
+        if ($resp instanceof ResponseInterface) {
+            return $resp;
+        } else {
+            return $this->response->build(204, [], []);
+        }
     }
+}
 
-    public function configure(BuilderInterface $builder, ElementFactoryInterface $elementFactory)
-    {
-        $builder->add($elementFactory->newInput('file', 'File', 'text', 'Click <a ng-click="help.showDialog(\'help/action/php.md\')">here</a> for more information.'));
-    }
+function runScript($file, array $ctx)
+{
+    extract($ctx);
+    return require $file;
 }

@@ -21,6 +21,7 @@
 
 namespace Fusio\Adapter\Php\Tests\Action;
 
+use Fusio\Adapter\Php\Action\PhpEngine;
 use Fusio\Adapter\Php\Action\PhpProcessor;
 use Fusio\Engine\Form\Builder;
 use Fusio\Engine\Form\Container;
@@ -29,13 +30,13 @@ use Fusio\Engine\Test\EngineTestCaseTrait;
 use PSX\Record\Record;
 
 /**
- * PhpProcessorTest
+ * PhpEngineTest
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.gnu.org/licenses/agpl-3.0
  * @link    http://fusio-project.org
  */
-class PhpProcessorTest extends \PHPUnit_Framework_TestCase
+class PhpEngineTest extends \PHPUnit_Framework_TestCase
 {
     use EngineTestCaseTrait;
 
@@ -46,7 +47,8 @@ class PhpProcessorTest extends \PHPUnit_Framework_TestCase
 
     public function testHandle()
     {
-        $action = $this->getActionFactory()->factory(PhpProcessor::class);
+        $action = $this->getActionFactory()->factory(PhpEngine::class);
+        $action->setFile(__DIR__ . '/script.php');
 
         // handle request
         $response = $action->handle(
@@ -57,7 +59,7 @@ class PhpProcessorTest extends \PHPUnit_Framework_TestCase
                 ['Content-Type' => 'application/json'], 
                 Record::fromArray(['foo' => 'bar'])
             ),
-            $this->getParameters(['file' => __DIR__ . '/script.php']),
+            $this->getParameters(),
             $this->getContext()
         );
 
@@ -76,7 +78,7 @@ JSON;
 
     public function testGetForm()
     {
-        $action  = $this->getActionFactory()->factory(PhpProcessor::class);
+        $action  = $this->getActionFactory()->factory(PhpEngine::class);
         $builder = new Builder();
         $factory = $this->getFormElementFactory();
 
