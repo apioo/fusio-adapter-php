@@ -24,8 +24,8 @@ namespace Fusio\Adapter\Php\Tests\Action;
 use Fusio\Adapter\Php\Action\PhpEngine;
 use Fusio\Engine\Form\Builder;
 use Fusio\Engine\Form\Container;
-use Fusio\Engine\ResponseInterface;
 use Fusio\Engine\Test\EngineTestCaseTrait;
+use PSX\Http\Environment\HttpResponseInterface;
 use PSX\Record\Record;
 
 /**
@@ -69,7 +69,7 @@ class PhpEngineTest extends \PHPUnit_Framework_TestCase
 }
 JSON;
 
-        $this->assertInstanceOf(ResponseInterface::class, $response);
+        $this->assertInstanceOf(HttpResponseInterface::class, $response);
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals(['x-foo' => 'bar'], $response->getHeaders());
         $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
