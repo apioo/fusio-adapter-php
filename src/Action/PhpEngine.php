@@ -25,7 +25,7 @@ use Fusio\Engine\ActionAbstract;
 use Fusio\Engine\ContextInterface;
 use Fusio\Engine\ParametersInterface;
 use Fusio\Engine\RequestInterface;
-use Fusio\Engine\ResponseInterface;
+use PSX\Http\Environment\HttpResponseInterface;
 
 /**
  * PhpEngine
@@ -63,7 +63,7 @@ class PhpEngine extends ActionAbstract
             'cache' => $this->cache,
         ]);
 
-        if ($resp instanceof ResponseInterface) {
+        if ($resp instanceof HttpResponseInterface) {
             return $resp;
         } else {
             return $this->response->build(204, [], []);
