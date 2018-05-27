@@ -59,6 +59,7 @@ class PhpEngine extends ActionAbstract
             'connector' => $this->connector,
             'response' => $this->response,
             'processor' => $this->processor,
+            'dispatcher' => $this->dispatcher,
             'logger' => $this->logger,
             'cache' => $this->cache,
         ]);
