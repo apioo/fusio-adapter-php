@@ -138,6 +138,31 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 
+    /**
+     * @expectedException \PSX\Sandbox\SecurityException
+     * @expectedExceptionMessage Call to a not allowed function shell_exec
+     */
+    public function testHandleInvalidCode()
+    {
+        /** @var PhpSandbox $action */
+        $action = $this->getActionFactory()->factory(PhpSandbox::class);
+
+        $code = <<<'PHP'
+<?php
+
+$return = shell_exec('ls -l');
+
+return $response->build(200, ['X-Foo' => 'bar'], [
+    'foo' => $return
+]);
+
+PHP;
+
+        $parameters = $this->getParameters(['code' => $code]);
+
+        $action->onCreate('invalid-action', $parameters);
+    }
+
     public function testLifecycle()
     {
         /** @var PhpSandbox $action */
