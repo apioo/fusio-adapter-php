@@ -88,6 +88,6 @@ class PhpSandbox extends PhpEngine implements LifecycleInterface
             $basePath = sys_get_temp_dir();
         }
 
-        return $basePath . '/sandbox_' . md5(substr($name, 0, 8)) . '.php';
+        return $basePath . '/sandbox_' . substr(md5($name), 0, 8) . '.php';
     }
 }
