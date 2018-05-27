@@ -5,6 +5,7 @@
  * @var $connector \Fusio\Engine\ConnectorInterface
  * @var $response \Fusio\Engine\Response\FactoryInterface
  * @var $processor \Fusio\Engine\ProcessorInterface
+ * @var $dispatcher \Fusio\Engine\DispatcherInterface
  * @var $logger \Psr\Log\LoggerInterface
  * @var $cache \Psr\SimpleCache\CacheInterface
  */
@@ -14,6 +15,7 @@ assert($context instanceof \Fusio\Engine\ContextInterface);
 assert($connector instanceof \Fusio\Engine\ConnectorInterface);
 assert($response instanceof \Fusio\Engine\Response\FactoryInterface);
 assert($processor instanceof \Fusio\Engine\ProcessorInterface);
+assert($dispatcher instanceof \Fusio\Engine\DispatcherInterface);
 assert($logger instanceof \Psr\Log\LoggerInterface);
 assert($cache instanceof \Psr\SimpleCache\CacheInterface);
 
