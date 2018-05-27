@@ -24,6 +24,7 @@ namespace Fusio\Adapter\Php\Tests\Action;
 use Fusio\Adapter\Php\Action\PhpProcessor;
 use Fusio\Engine\Form\Builder;
 use Fusio\Engine\Form\Container;
+use Fusio\Engine\Form\Element\Input;
 use Fusio\Engine\Test\EngineTestCaseTrait;
 use PSX\Http\Environment\HttpResponseInterface;
 use PSX\Record\Record;
@@ -83,5 +84,9 @@ JSON;
         $action->configure($builder, $factory);
 
         $this->assertInstanceOf(Container::class, $builder->getForm());
+
+        $elements = $builder->getForm()->getProperty('element');
+        $this->assertEquals(1, count($elements));
+        $this->assertInstanceOf(Input::class, $elements[0]);
     }
 }
