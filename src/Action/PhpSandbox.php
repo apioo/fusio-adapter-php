@@ -45,7 +45,17 @@ class PhpSandbox extends PhpEngine implements LifecycleInterface
 
     public function handle(RequestInterface $request, ParametersInterface $configuration, ContextInterface $context)
     {
-        $this->setFile($this->getActionFile($context->getAction()->getName()));
+        $file = $this->getActionFile($context->getAction()->getName());
+
+        // it could be that the file is not longer available since we store the
+        // source code in the cache. I.e. if we update a docker container the
+        // cache files are not transferred to the new container, because of
+        // this we check here the file and write it again to the cache
+        if (!is_file($file)) {
+            $this->onCreate($context->getAction()->getName(), $configuration);
+        }
+
+        $this->setFile($file);
 
         return parent::handle($request, $configuration, $context);
     }
