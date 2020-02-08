@@ -28,6 +28,7 @@ use Fusio\Engine\Form\ElementFactoryInterface;
 use Fusio\Engine\ParametersInterface;
 use Fusio\Engine\RequestInterface;
 use PSX\Sandbox\Parser;
+use PSX\Sandbox\SecurityManager;
 
 /**
  * PhpSandbox
@@ -38,6 +39,18 @@ use PSX\Sandbox\Parser;
  */
 class PhpSandbox extends PhpEngine implements LifecycleInterface
 {
+    /**
+     * @var \PSX\Sandbox\Parser
+     */
+    private $parser;
+
+    public function __construct($file = null)
+    {
+        parent::__construct($file);
+
+        $this->parser = new Parser($this->newSecurityManager());
+    }
+
     public function getName()
     {
         return 'PHP-Sandbox';
@@ -68,7 +81,7 @@ class PhpSandbox extends PhpEngine implements LifecycleInterface
     public function onCreate($name, ParametersInterface $config)
     {
         $file = $this->getActionFile($name);
-        $code = (new Parser())->parse($config->get('code'));
+        $code = $this->parser->parse($config->get('code'));
 
         file_put_contents($file, $code);
     }
@@ -76,7 +89,7 @@ class PhpSandbox extends PhpEngine implements LifecycleInterface
     public function onUpdate($name, ParametersInterface $config)
     {
         $file = $this->getActionFile($name);
-        $code = (new Parser())->parse($config->get('code'));
+        $code = $this->parser->parse($config->get('code'));
 
         file_put_contents($file, $code);
     }
@@ -99,5 +112,13 @@ class PhpSandbox extends PhpEngine implements LifecycleInterface
         }
 
         return $basePath . '/sandbox_' . substr(md5($name), 0, 8) . '.php';
+    }
+
+    private function newSecurityManager()
+    {
+        $securityManager = new SecurityManager();
+        $securityManager->addAllowedClass('PSX\Sql\Builder');
+
+        return $securityManager;
     }
 }
