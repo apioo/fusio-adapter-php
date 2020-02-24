@@ -118,6 +118,7 @@ class PhpSandbox extends PhpEngine implements LifecycleInterface
     {
         $securityManager = new SecurityManager();
         $securityManager->addAllowedClass('PSX\Sql\Builder');
+        $securityManager->addAllowedClass('PSX\Sql\Reference');
 
         return $securityManager;
     }
