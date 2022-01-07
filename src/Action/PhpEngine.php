@@ -3,7 +3,7 @@
  * Fusio
  * A web-application to create dynamically RESTful APIs
  *
- * Copyright (C) 2015-2018 Christoph Kappestein <christoph.kappestein@gmail.com>
+ * Copyright (C) 2015-2022 Christoph Kappestein <christoph.kappestein@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -32,26 +32,23 @@ use PSX\Http\Environment\HttpResponseInterface;
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.gnu.org/licenses/agpl-3.0
- * @link    http://fusio-project.org
+ * @link    https://www.fusio-project.org/
  */
 class PhpEngine extends ActionAbstract
 {
-    /**
-     * @var string
-     */
-    protected $file;
+    protected ?string $file;
 
-    public function __construct($file = null)
+    public function __construct(?string $file = null)
     {
         $this->file = $file;
     }
 
-    public function setFile($file)
+    public function setFile(?string $file)
     {
         $this->file = $file;
     }
 
-    public function handle(RequestInterface $request, ParametersInterface $configuration, ContextInterface $context)
+    public function handle(RequestInterface $request, ParametersInterface $configuration, ContextInterface $context): HttpResponseInterface
     {
         $resp = runScript($this->file, [
             'request' => $request,
@@ -72,7 +69,7 @@ class PhpEngine extends ActionAbstract
     }
 }
 
-function runScript($file, array $ctx)
+function runScript(string $file, array $ctx)
 {
     extract($ctx);
     return require $file;
