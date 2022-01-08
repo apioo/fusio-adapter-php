@@ -104,7 +104,7 @@ return $response->build(200, ['X-Foo' => 'bar'], [
 
 PHP;
 
-        $actionModel = new Action(1, 'test-action', );
+        $actionModel = new Action(1, 'test-action', '', '', false, []);
 
         $context    = $this->getContext()->withAction($actionModel);
         $parameters = $this->getParameters(['code' => $code]);
