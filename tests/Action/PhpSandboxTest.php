@@ -31,6 +31,7 @@ use Fusio\Engine\Test\EngineTestCaseTrait;
 use PHPUnit\Framework\TestCase;
 use PSX\Http\Environment\HttpResponseInterface;
 use PSX\Record\Record;
+use PSX\Sandbox\SecurityException;
 
 /**
  * PhpSandboxTest
@@ -50,7 +51,6 @@ class PhpSandboxTest extends TestCase
 
     public function testHandle()
     {
-        /** @var PhpSandbox $action */
         $action = $this->getActionFactory()->factory(PhpSandbox::class);
 
         $code = <<<'PHP'
@@ -104,8 +104,7 @@ return $response->build(200, ['X-Foo' => 'bar'], [
 
 PHP;
 
-        $actionModel = new Action();
-        $actionModel->setName('test-action');
+        $actionModel = new Action(1, 'test-action', );
 
         $context    = $this->getContext()->withAction($actionModel);
         $parameters = $this->getParameters(['code' => $code]);
@@ -139,13 +138,10 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 
-    /**
-     * @expectedException \PSX\Sandbox\SecurityException
-     * @expectedExceptionMessage Call to a not allowed function shell_exec
-     */
     public function testHandleInvalidCode()
     {
-        /** @var PhpSandbox $action */
+        $this->expectException(SecurityException::class);
+
         $action = $this->getActionFactory()->factory(PhpSandbox::class);
 
         $code = <<<'PHP'
@@ -166,7 +162,6 @@ PHP;
 
     public function testLifecycle()
     {
-        /** @var PhpSandbox $action */
         $action = $this->getActionFactory()->factory(PhpSandbox::class);
 
         $codeCreate = '<?php' . "\n\n" . 'return $response->build(200, [], ["foo" => "bar"]);';
@@ -203,12 +198,12 @@ PHP;
 
         $this->assertInstanceOf(Container::class, $builder->getForm());
 
-        $elements = $builder->getForm()->getProperty('element');
+        $elements = $builder->getForm()->getElements();
         $this->assertEquals(1, count($elements));
         $this->assertInstanceOf(TextArea::class, $elements[0]);
     }
 
-    private function getActionFile($name)
+    private function getActionFile(string $name): string
     {
         if (defined('PSX_PATH_CACHE')) {
             $basePath = PSX_PATH_CACHE;

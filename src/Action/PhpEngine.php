@@ -43,7 +43,7 @@ class PhpEngine extends ActionAbstract
         $this->file = $file;
     }
 
-    public function setFile(?string $file)
+    public function setFile(?string $file): void
     {
         $this->file = $file;
     }
