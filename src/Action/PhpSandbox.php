@@ -73,7 +73,7 @@ class PhpSandbox extends PhpEngine implements LifecycleInterface
 
     public function configure(BuilderInterface $builder, ElementFactoryInterface $elementFactory): void
     {
-        $builder->add($elementFactory->newTextArea('code', 'Code', 'php', 'Click <a ng-click="help.showDialog(\'help/action/php.md\')">here</a> for more information.'));
+        $builder->add($elementFactory->newTextArea('code', 'Code', 'php', 'The PHP code of this action'));
     }
 
     public function onCreate(string $name, ParametersInterface $config): void

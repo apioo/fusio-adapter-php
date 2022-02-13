@@ -51,6 +51,6 @@ class PhpProcessor extends PhpEngine
 
     public function configure(BuilderInterface $builder, ElementFactoryInterface $elementFactory): void
     {
-        $builder->add($elementFactory->newInput('file', 'File', 'text', 'Click <a ng-click="help.showDialog(\'help/action/php.md\')">here</a> for more information.'));
+        $builder->add($elementFactory->newInput('file', 'File', 'text', 'A path to the PHP file'));
     }
 }
