@@ -22,6 +22,7 @@
 namespace Fusio\Adapter\Php\Action;
 
 use Fusio\Engine\Action\LifecycleInterface;
+use Fusio\Engine\Action\RuntimeInterface;
 use Fusio\Engine\ContextInterface;
 use Fusio\Engine\Form\BuilderInterface;
 use Fusio\Engine\Form\ElementFactoryInterface;
@@ -42,9 +43,9 @@ class PhpSandbox extends PhpEngine implements LifecycleInterface
 {
     private Parser $parser;
 
-    public function __construct(?string $file = null)
+    public function __construct(RuntimeInterface $runtime)
     {
-        parent::__construct($file);
+        parent::__construct($runtime);
 
         $this->parser = new Parser($this->newSecurityManager());
     }

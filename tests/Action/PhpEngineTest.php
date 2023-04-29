@@ -21,11 +21,10 @@
 
 namespace Fusio\Adapter\Php\Tests\Action;
 
+use Fusio\Adapter\Neo4j\Tests\PhpTestCase;
 use Fusio\Adapter\Php\Action\PhpEngine;
 use Fusio\Engine\Form\Builder;
 use Fusio\Engine\Form\Container;
-use Fusio\Engine\Test\EngineTestCaseTrait;
-use PHPUnit\Framework\TestCase;
 use PSX\Http\Environment\HttpResponseInterface;
 use PSX\Record\Record;
 
@@ -36,15 +35,8 @@ use PSX\Record\Record;
  * @license http://www.gnu.org/licenses/agpl-3.0
  * @link    https://www.fusio-project.org/
  */
-class PhpEngineTest extends TestCase
+class PhpEngineTest extends PhpTestCase
 {
-    use EngineTestCaseTrait;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     public function testHandle()
     {
         $action = $this->getActionFactory()->factory(PhpEngine::class);

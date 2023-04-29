@@ -6,6 +6,6 @@ simple PHP files. You can install the adapter with the following steps inside
 your Fusio project:
 
     composer require fusio/adapter-php
-    php bin/fusio system:register Fusio\Adapter\Php\Adapter
+    php bin/fusio system:register "Fusio\Adapter\Php\Adapter"
 
-[Fusio]: http://fusio-project.org/
+[Fusio]: https://www.fusio-project.org/

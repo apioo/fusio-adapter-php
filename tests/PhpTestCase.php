@@ -19,21 +19,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Fusio\Adapter\Php;
+namespace Fusio\Adapter\Neo4j\Tests;
 
-use Fusio\Engine\AdapterInterface;
+use Fusio\Adapter\OpenStack\Connection\BlockStorage;
+use Fusio\Adapter\OpenStack\Connection\Compute;
+use Fusio\Adapter\OpenStack\Connection\Identity;
+use Fusio\Adapter\OpenStack\Connection\Images;
+use Fusio\Adapter\OpenStack\Connection\Networking;
+use Fusio\Adapter\OpenStack\Connection\ObjectStore;
+use Fusio\Adapter\Php\Action\PhpProcessor;
+use Fusio\Adapter\Php\Action\PhpSandbox;
+use Fusio\Engine\Action\Runtime;
+use Fusio\Engine\Test\EngineTestCaseTrait;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\DependencyInjection\Container;
 
 /**
- * Adapter
+ * PhpTestCase
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.gnu.org/licenses/agpl-3.0
  * @link    https://www.fusio-project.org/
  */
-class Adapter implements AdapterInterface
+abstract class PhpTestCase extends TestCase
 {
-    public function getContainerFile(): string
+    use EngineTestCaseTrait;
+
+    protected function configure(Runtime $runtime, Container $container): void
     {
-        return __DIR__ . '/../resources/container.php';
+        $container->set(PhpProcessor::class, new PhpProcessor($runtime));
+        $container->set(PhpSandbox::class, new PhpSandbox($runtime));
     }
 }

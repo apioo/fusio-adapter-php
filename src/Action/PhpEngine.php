@@ -36,12 +36,7 @@ use PSX\Http\Environment\HttpResponseInterface;
  */
 class PhpEngine extends ActionAbstract
 {
-    protected ?string $file;
-
-    public function __construct(?string $file = null)
-    {
-        $this->file = $file;
-    }
+    protected ?string $file = null;
 
     public function setFile(?string $file): void
     {
