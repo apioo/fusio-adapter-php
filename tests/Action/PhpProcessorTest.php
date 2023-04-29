@@ -21,7 +21,7 @@
 
 namespace Fusio\Adapter\Php\Tests\Action;
 
-use Fusio\Adapter\Neo4j\Tests\PhpTestCase;
+use Fusio\Adapter\Php\Tests\PhpTestCase;
 use Fusio\Adapter\Php\Action\PhpProcessor;
 use Fusio\Engine\Form\Builder;
 use Fusio\Engine\Form\Container;

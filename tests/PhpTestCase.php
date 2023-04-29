@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Fusio\Adapter\Neo4j\Tests;
+namespace Fusio\Adapter\Php\Tests;
 
 use Fusio\Adapter\OpenStack\Connection\BlockStorage;
 use Fusio\Adapter\OpenStack\Connection\Compute;
