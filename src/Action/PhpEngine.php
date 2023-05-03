@@ -23,6 +23,7 @@ namespace Fusio\Adapter\Php\Action;
 
 use Fusio\Engine\ActionAbstract;
 use Fusio\Engine\ContextInterface;
+use Fusio\Engine\Exception\ConfigurationException;
 use Fusio\Engine\ParametersInterface;
 use Fusio\Engine\RequestInterface;
 use PSX\Http\Environment\HttpResponseInterface;
@@ -45,7 +46,9 @@ class PhpEngine extends ActionAbstract
 
     public function handle(RequestInterface $request, ParametersInterface $configuration, ContextInterface $context): HttpResponseInterface
     {
-        $resp = runScript($this->file, [
+        $file = $this->file ?? throw new ConfigurationException('No file provided');
+
+        $resp = runScript($file, [
             'request' => $request,
             'context' => $context,
             'connector' => $this->connector,
