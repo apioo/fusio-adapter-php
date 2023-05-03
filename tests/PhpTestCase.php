@@ -21,12 +21,7 @@
 
 namespace Fusio\Adapter\Php\Tests;
 
-use Fusio\Adapter\OpenStack\Connection\BlockStorage;
-use Fusio\Adapter\OpenStack\Connection\Compute;
-use Fusio\Adapter\OpenStack\Connection\Identity;
-use Fusio\Adapter\OpenStack\Connection\Images;
-use Fusio\Adapter\OpenStack\Connection\Networking;
-use Fusio\Adapter\OpenStack\Connection\ObjectStore;
+use Fusio\Adapter\Php\Action\PhpEngine;
 use Fusio\Adapter\Php\Action\PhpProcessor;
 use Fusio\Adapter\Php\Action\PhpSandbox;
 use Fusio\Engine\Action\Runtime;
@@ -47,6 +42,7 @@ abstract class PhpTestCase extends TestCase
 
     protected function configure(Runtime $runtime, Container $container): void
     {
+        $container->set(PhpEngine::class, new PhpEngine($runtime));
         $container->set(PhpProcessor::class, new PhpProcessor($runtime));
         $container->set(PhpSandbox::class, new PhpSandbox($runtime));
     }
