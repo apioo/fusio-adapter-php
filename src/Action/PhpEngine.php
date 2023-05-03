@@ -67,7 +67,7 @@ class PhpEngine extends ActionAbstract
     }
 }
 
-function runScript(string $file, array $ctx)
+function runScript(string $file, array $ctx): mixed
 {
     extract($ctx);
     return require $file;

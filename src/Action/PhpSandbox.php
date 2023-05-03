@@ -24,6 +24,7 @@ namespace Fusio\Adapter\Php\Action;
 use Fusio\Engine\Action\LifecycleInterface;
 use Fusio\Engine\Action\RuntimeInterface;
 use Fusio\Engine\ContextInterface;
+use Fusio\Engine\Exception\ConfigurationException;
 use Fusio\Engine\Form\BuilderInterface;
 use Fusio\Engine\Form\ElementFactoryInterface;
 use Fusio\Engine\ParametersInterface;
@@ -57,14 +58,18 @@ class PhpSandbox extends PhpEngine implements LifecycleInterface
 
     public function handle(RequestInterface $request, ParametersInterface $configuration, ContextInterface $context): HttpResponseInterface
     {
-        $file = $this->getActionFile($context->getAction()->getName());
+        $action = $context->getAction()?->getName();
+        if (empty($action)) {
+            throw new \RuntimeException('No action name available');
+        }
 
-        // it could be that the file is not longer available since we store the
-        // source code in the cache. I.e. if we update a docker container the
-        // cache files are not transferred to the new container, because of
-        // this we check here the file and write it again to the cache
+        $file = $this->getActionFile($action);
+
+        // it could be that the file is not longer available since we store the source code in the cache. I.e. if we
+        // update a docker container the cache files are not transferred to the new container, because of this we check
+        // here the file and write it again to the cache
         if (!is_file($file)) {
-            $this->onCreate($context->getAction()->getName(), $configuration);
+            $this->onCreate($action, $configuration);
         }
 
         $this->setFile($file);
@@ -80,7 +85,8 @@ class PhpSandbox extends PhpEngine implements LifecycleInterface
     public function onCreate(string $name, ParametersInterface $config): void
     {
         $file = $this->getActionFile($name);
-        $code = $this->parser->parse($config->get('code'));
+        $code = $config->get('code') ?? throw new ConfigurationException('No code provided');
+        $code = $this->parser->parse($code);
 
         file_put_contents($file, $code);
     }
@@ -88,7 +94,8 @@ class PhpSandbox extends PhpEngine implements LifecycleInterface
     public function onUpdate(string $name, ParametersInterface $config): void
     {
         $file = $this->getActionFile($name);
-        $code = $this->parser->parse($config->get('code'));
+        $code = $config->get('code') ?? throw new ConfigurationException('No code provided');
+        $code = $this->parser->parse($code);
 
         file_put_contents($file, $code);
     }
