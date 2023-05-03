@@ -70,5 +70,7 @@ class PhpEngine extends ActionAbstract
 function runScript(string $file, array $ctx): mixed
 {
     extract($ctx);
+
+    /** @psalm-suppress UnresolvableInclude */
     return require $file;
 }
