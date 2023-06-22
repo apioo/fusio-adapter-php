@@ -23,6 +23,7 @@ namespace Fusio\Adapter\Php\Action;
 
 use Fusio\Engine\Action\LifecycleInterface;
 use Fusio\Engine\Action\RuntimeInterface;
+use Fusio\Engine\ConfigurableInterface;
 use Fusio\Engine\ContextInterface;
 use Fusio\Engine\Exception\ConfigurationException;
 use Fusio\Engine\Form\BuilderInterface;
@@ -40,7 +41,7 @@ use PSX\Sandbox\SecurityManager;
  * @license http://www.gnu.org/licenses/agpl-3.0
  * @link    https://www.fusio-project.org/
  */
-class PhpSandbox extends PhpEngine implements LifecycleInterface
+class PhpSandbox extends PhpEngine implements LifecycleInterface, ConfigurableInterface
 {
     private Parser $parser;
 
