@@ -45,7 +45,7 @@ use PSX\Http\Environment\HttpResponseInterface;
  */
 class PhpEngine implements ActionInterface
 {
-    protected ?string $file = null;
+    private ?string $file = null;
 
     private ConnectorInterface $connector;
     private FactoryInterface $response;
