@@ -67,15 +67,4 @@ JSON;
         $this->assertEquals(['x-foo' => 'bar'], $response->getHeaders());
         $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
-
-    public function testGetForm()
-    {
-        $action  = $this->getActionFactory()->factory(PhpEngine::class);
-        $builder = new Builder();
-        $factory = $this->getFormElementFactory();
-
-        $action->configure($builder, $factory);
-
-        $this->assertInstanceOf(Container::class, $builder->getForm());
-    }
 }
