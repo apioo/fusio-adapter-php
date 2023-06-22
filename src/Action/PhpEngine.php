@@ -21,11 +21,19 @@
 
 namespace Fusio\Adapter\Php\Action;
 
+use Fusio\Engine\Action\RuntimeInterface;
 use Fusio\Engine\ActionAbstract;
+use Fusio\Engine\ActionInterface;
+use Fusio\Engine\ConnectorInterface;
 use Fusio\Engine\ContextInterface;
+use Fusio\Engine\DispatcherInterface;
 use Fusio\Engine\Exception\ConfigurationException;
 use Fusio\Engine\ParametersInterface;
+use Fusio\Engine\ProcessorInterface;
 use Fusio\Engine\RequestInterface;
+use Fusio\Engine\Response\FactoryInterface;
+use Psr\Log\LoggerInterface;
+use Psr\SimpleCache\CacheInterface;
 use PSX\Http\Environment\HttpResponseInterface;
 
 /**
@@ -35,9 +43,26 @@ use PSX\Http\Environment\HttpResponseInterface;
  * @license http://www.gnu.org/licenses/agpl-3.0
  * @link    https://www.fusio-project.org/
  */
-class PhpEngine extends ActionAbstract
+class PhpEngine implements ActionInterface
 {
     protected ?string $file = null;
+
+    private ConnectorInterface $connector;
+    private FactoryInterface $response;
+    private ProcessorInterface $processor;
+    private DispatcherInterface $dispatcher;
+    private LoggerInterface $logger;
+    private CacheInterface $cache;
+
+    public function __construct(RuntimeInterface $runtime)
+    {
+        $this->connector = $runtime->getConnector();
+        $this->response = $runtime->getResponse();
+        $this->processor = $runtime->getProcessor();
+        $this->dispatcher = $runtime->getDispatcher();
+        $this->logger = $runtime->getLogger();
+        $this->cache = $runtime->getCache();
+    }
 
     public function setFile(?string $file): void
     {
