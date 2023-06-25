@@ -21,7 +21,7 @@
 
 namespace Fusio\Adapter\Php\Tests\Action;
 
-use Fusio\Adapter\Php\Action\PhpEngine;
+use Fusio\Adapter\Php\Action\PhpExecutorAbstract;
 use Fusio\Adapter\Php\Tests\PhpTestCase;
 use PSX\Http\Environment\HttpResponseInterface;
 use PSX\Record\Record;
@@ -37,7 +37,7 @@ class PhpEngineTest extends PhpTestCase
 {
     public function testHandle()
     {
-        $action = $this->getActionFactory()->factory(PhpEngine::class);
+        $action = $this->getActionFactory()->factory(PhpExecutorAbstract::class);
         $action->setFile(__DIR__ . '/script.php');
 
         // handle request

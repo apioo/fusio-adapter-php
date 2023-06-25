@@ -21,7 +21,7 @@
 
 namespace Fusio\Adapter\Php\Tests;
 
-use Fusio\Adapter\Php\Action\PhpEngine;
+use Fusio\Adapter\Php\Action\PhpExecutorAbstract;
 use Fusio\Adapter\Php\Action\PhpProcessor;
 use Fusio\Adapter\Php\Action\PhpSandbox;
 use Fusio\Engine\Action\Runtime;
@@ -42,7 +42,7 @@ abstract class PhpTestCase extends TestCase
 
     protected function configure(Runtime $runtime, Container $container): void
     {
-        $container->set(PhpEngine::class, new PhpEngine($runtime));
+        $container->set(PhpExecutorAbstract::class, new PhpExecutorAbstract($runtime));
         $container->set(PhpProcessor::class, new PhpProcessor($runtime));
         $container->set(PhpSandbox::class, new PhpSandbox($runtime));
     }

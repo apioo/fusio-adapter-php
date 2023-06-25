@@ -41,7 +41,7 @@ use PSX\Sandbox\SecurityManager;
  * @license http://www.gnu.org/licenses/agpl-3.0
  * @link    https://www.fusio-project.org/
  */
-class PhpSandbox extends PhpEngine implements LifecycleInterface, ConfigurableInterface
+class PhpSandbox extends PhpExecutorAbstract implements LifecycleInterface, ConfigurableInterface
 {
     private Parser $parser;
 
@@ -73,9 +73,7 @@ class PhpSandbox extends PhpEngine implements LifecycleInterface, ConfigurableIn
             $this->onCreate($action, $configuration);
         }
 
-        $this->setFile($file);
-
-        return parent::handle($request, $configuration, $context);
+        return $this->execute($file, $request, $context);
     }
 
     public function configure(BuilderInterface $builder, ElementFactoryInterface $elementFactory): void

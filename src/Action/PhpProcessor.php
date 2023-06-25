@@ -21,8 +21,8 @@
 
 namespace Fusio\Adapter\Php\Action;
 
-use Fusio\Engine\ConfigurableInterface;
 use Fusio\Engine\ContextInterface;
+use Fusio\Engine\Exception\ConfigurationException;
 use Fusio\Engine\Form\BuilderInterface;
 use Fusio\Engine\Form\ElementFactoryInterface;
 use Fusio\Engine\ParametersInterface;
@@ -36,7 +36,7 @@ use PSX\Http\Environment\HttpResponseInterface;
  * @license http://www.gnu.org/licenses/agpl-3.0
  * @link    https://www.fusio-project.org/
  */
-class PhpProcessor extends PhpEngine implements ConfigurableInterface
+class PhpProcessor extends PhpExecutorAbstract
 {
     public function getName(): string
     {
@@ -45,9 +45,12 @@ class PhpProcessor extends PhpEngine implements ConfigurableInterface
 
     public function handle(RequestInterface $request, ParametersInterface $configuration, ContextInterface $context): HttpResponseInterface
     {
-        $this->setFile($configuration->get('file'));
+        $file = $configuration->get('file');
+        if (empty($file)) {
+            throw new ConfigurationException('No file configured');
+        }
 
-        return parent::handle($request, $configuration, $context);
+        return $this->execute($file, $request, $context);
     }
 
     public function configure(BuilderInterface $builder, ElementFactoryInterface $elementFactory): void

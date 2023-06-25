@@ -21,59 +21,23 @@
 
 namespace Fusio\Adapter\Php\Action;
 
-use Fusio\Engine\Action\RuntimeInterface;
 use Fusio\Engine\ActionAbstract;
-use Fusio\Engine\ActionInterface;
-use Fusio\Engine\ConnectorInterface;
 use Fusio\Engine\ContextInterface;
-use Fusio\Engine\DispatcherInterface;
-use Fusio\Engine\Exception\ConfigurationException;
-use Fusio\Engine\ParametersInterface;
-use Fusio\Engine\ProcessorInterface;
 use Fusio\Engine\RequestInterface;
-use Fusio\Engine\Response\FactoryInterface;
-use Psr\Log\LoggerInterface;
-use Psr\SimpleCache\CacheInterface;
 use PSX\Http\Environment\HttpResponseInterface;
 
 /**
- * PhpEngine
+ * PhpExecutorAbstract
  *
  * @author  Christoph Kappestein <christoph.kappestein@gmail.com>
  * @license http://www.gnu.org/licenses/agpl-3.0
  * @link    https://www.fusio-project.org/
  */
-class PhpEngine implements ActionInterface
+abstract class PhpExecutorAbstract extends ActionAbstract
 {
-    private ?string $file = null;
-
-    private ConnectorInterface $connector;
-    private FactoryInterface $response;
-    private ProcessorInterface $processor;
-    private DispatcherInterface $dispatcher;
-    private LoggerInterface $logger;
-    private CacheInterface $cache;
-
-    public function __construct(RuntimeInterface $runtime)
+    public function execute(string $file, RequestInterface $request, ContextInterface $context): HttpResponseInterface
     {
-        $this->connector = $runtime->getConnector();
-        $this->response = $runtime->getResponse();
-        $this->processor = $runtime->getProcessor();
-        $this->dispatcher = $runtime->getDispatcher();
-        $this->logger = $runtime->getLogger();
-        $this->cache = $runtime->getCache();
-    }
-
-    public function setFile(?string $file): void
-    {
-        $this->file = $file;
-    }
-
-    public function handle(RequestInterface $request, ParametersInterface $configuration, ContextInterface $context): HttpResponseInterface
-    {
-        $file = $this->file ?? throw new ConfigurationException('No file provided');
-
-        $resp = runScript($file, [
+        $response = runScript($file, [
             'request' => $request,
             'context' => $context,
             'connector' => $this->connector,
@@ -84,8 +48,8 @@ class PhpEngine implements ActionInterface
             'cache' => $this->cache,
         ]);
 
-        if ($resp instanceof HttpResponseInterface) {
-            return $resp;
+        if ($response instanceof HttpResponseInterface) {
+            return $response;
         } else {
             return $this->response->build(204, [], []);
         }
