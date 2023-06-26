@@ -42,7 +42,6 @@ abstract class PhpTestCase extends TestCase
 
     protected function configure(Runtime $runtime, Container $container): void
     {
-        $container->set(PhpExecutorAbstract::class, new PhpExecutorAbstract($runtime));
         $container->set(PhpProcessor::class, new PhpProcessor($runtime));
         $container->set(PhpSandbox::class, new PhpSandbox($runtime));
     }
