@@ -21,13 +21,9 @@
 
 namespace Fusio\Adapter\Php\Tests;
 
-use Fusio\Adapter\Php\Action\PhpExecutorAbstract;
-use Fusio\Adapter\Php\Action\PhpProcessor;
-use Fusio\Adapter\Php\Action\PhpSandbox;
-use Fusio\Engine\Action\Runtime;
+use Fusio\Adapter\Php\Adapter;
 use Fusio\Engine\Test\EngineTestCaseTrait;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\DependencyInjection\Container;
 
 /**
  * PhpTestCase
@@ -40,9 +36,8 @@ abstract class PhpTestCase extends TestCase
 {
     use EngineTestCaseTrait;
 
-    protected function configure(Runtime $runtime, Container $container): void
+    protected function getAdapterClass(): string
     {
-        $container->set(PhpProcessor::class, new PhpProcessor($runtime));
-        $container->set(PhpSandbox::class, new PhpSandbox($runtime));
+        return Adapter::class;
     }
 }
