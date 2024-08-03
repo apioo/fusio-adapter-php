@@ -60,7 +60,7 @@ class PhpSandbox extends PhpExecutorAbstract implements LifecycleInterface, Conf
     public function handle(RequestInterface $request, ParametersInterface $configuration, ContextInterface $context): HttpResponseInterface
     {
         $action = $context->getAction()?->getName();
-        if (empty($action)) {
+        if ($action === null) {
             throw new \RuntimeException('No action name available');
         }
 
