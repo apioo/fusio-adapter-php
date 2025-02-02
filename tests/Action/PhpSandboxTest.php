@@ -176,7 +176,7 @@ PHP;
 
         $action->onDelete($name, $parameters);
 
-        $this->assertFileNotExists($file);
+        $this->assertFileDoesNotExist($file);
     }
 
     public function testGetForm()
