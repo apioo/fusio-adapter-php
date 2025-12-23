@@ -55,6 +55,9 @@ abstract class PhpExecutorAbstract extends ActionAbstract
     }
 }
 
+/**
+ * @param array<string, mixed> $ctx
+ */
 function runScript(string $file, array $ctx): mixed
 {
     extract($ctx);

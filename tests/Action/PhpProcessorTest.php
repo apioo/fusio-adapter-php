@@ -22,10 +22,12 @@ namespace Fusio\Adapter\Php\Tests\Action;
 
 use Fusio\Adapter\Php\Tests\PhpTestCase;
 use Fusio\Adapter\Php\Action\PhpProcessor;
+use Fusio\Engine\ConfigurableInterface;
 use Fusio\Engine\Form\Builder;
 use Fusio\Engine\Form\Container;
 use Fusio\Engine\Form\Element\Input;
 use PSX\Http\Environment\HttpResponseInterface;
+use PSX\Json\Parser;
 use PSX\Record\Record;
 
 /**
@@ -37,7 +39,7 @@ use PSX\Record\Record;
  */
 class PhpProcessorTest extends PhpTestCase
 {
-    public function testHandle()
+    public function testHandle(): void
     {
         $action = $this->getActionFactory()->factory(PhpProcessor::class);
 
@@ -54,7 +56,7 @@ class PhpProcessorTest extends PhpTestCase
             $this->getContext()
         );
 
-        $actual = json_encode($response->getBody(), JSON_PRETTY_PRINT);
+        $actual = Parser::encode($response->getBody(), JSON_PRETTY_PRINT);
         $expect = <<<JSON
 {
     "foo": "bar"
@@ -67,11 +69,13 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 
-    public function testGetForm()
+    public function testGetForm(): void
     {
         $action  = $this->getActionFactory()->factory(PhpProcessor::class);
         $builder = new Builder();
         $factory = $this->getFormElementFactory();
+
+        $this->assertInstanceOf(ConfigurableInterface::class, $action);
 
         $action->configure($builder, $factory);
 

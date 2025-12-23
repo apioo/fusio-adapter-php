@@ -22,11 +22,14 @@ namespace Fusio\Adapter\Php\Tests\Action;
 
 use Fusio\Adapter\Php\Tests\PhpTestCase;
 use Fusio\Adapter\Php\Action\PhpSandbox;
+use Fusio\Engine\Action\LifecycleInterface;
+use Fusio\Engine\ConfigurableInterface;
 use Fusio\Engine\Form\Builder;
 use Fusio\Engine\Form\Container;
 use Fusio\Engine\Form\Element\TextArea;
 use Fusio\Engine\Model\Action;
 use PSX\Http\Environment\HttpResponseInterface;
+use PSX\Json\Parser;
 use PSX\Record\Record;
 use PSX\Sandbox\SecurityException;
 
@@ -39,9 +42,11 @@ use PSX\Sandbox\SecurityException;
  */
 class PhpSandboxTest extends PhpTestCase
 {
-    public function testHandle()
+    public function testHandle(): void
     {
         $action = $this->getActionFactory()->factory(PhpSandbox::class);
+
+        $this->assertInstanceOf(LifecycleInterface::class, $action);
 
         $code = <<<'PHP'
 <?php
@@ -115,7 +120,7 @@ PHP;
             $context
         );
 
-        $actual = json_encode($response->getBody(), JSON_PRETTY_PRINT);
+        $actual = Parser::encode($response->getBody(), JSON_PRETTY_PRINT);
         $expect = <<<JSON
 {
     "foo": "bar"
@@ -128,11 +133,13 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expect, $actual, $actual);
     }
 
-    public function testHandleInvalidCode()
+    public function testHandleInvalidCode(): void
     {
         $this->expectException(SecurityException::class);
 
         $action = $this->getActionFactory()->factory(PhpSandbox::class);
+
+        $this->assertInstanceOf(LifecycleInterface::class, $action);
 
         $code = <<<'PHP'
 <?php
@@ -150,9 +157,11 @@ PHP;
         $action->onCreate('invalid-action', $parameters);
     }
 
-    public function testLifecycle()
+    public function testLifecycle(): void
     {
         $action = $this->getActionFactory()->factory(PhpSandbox::class);
+
+        $this->assertInstanceOf(LifecycleInterface::class, $action);
 
         $codeCreate = '<?php' . "\n\n" . 'return $response->build(200, [], ["foo" => "bar"]);';
         $codeUpdate = '<?php' . "\n\n" . 'return $response->build(201, [], ["foo" => "baz"]);';
@@ -178,11 +187,13 @@ PHP;
         $this->assertFileDoesNotExist($file);
     }
 
-    public function testGetForm()
+    public function testGetForm(): void
     {
         $action  = $this->getActionFactory()->factory(PhpSandbox::class);
         $builder = new Builder();
         $factory = $this->getFormElementFactory();
+
+        $this->assertInstanceOf(ConfigurableInterface::class, $action);
 
         $action->configure($builder, $factory);
 
