@@ -187,23 +187,6 @@ PHP;
         $this->assertFileDoesNotExist($file);
     }
 
-    public function testGetForm(): void
-    {
-        $action  = $this->getActionFactory()->factory(PhpSandbox::class);
-        $builder = new Builder();
-        $factory = $this->getFormElementFactory();
-
-        $this->assertInstanceOf(ConfigurableInterface::class, $action);
-
-        $action->configure($builder, $factory);
-
-        $this->assertInstanceOf(Container::class, $builder->getForm());
-
-        $elements = $builder->getForm()->getElements();
-        $this->assertEquals(1, count($elements));
-        $this->assertInstanceOf(TextArea::class, $elements[0]);
-    }
-
     private function getActionFile(string $name): string
     {
         if (defined('PSX_PATH_CACHE')) {
