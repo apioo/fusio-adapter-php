@@ -22,6 +22,7 @@ namespace Fusio\Adapter\Php\Action;
 
 use Fusio\Engine\ActionAbstract;
 use Fusio\Engine\ContextInterface;
+use Fusio\Engine\ExcludedInterface;
 use Fusio\Engine\RequestInterface;
 use PSX\Http\Environment\HttpResponseInterface;
 
@@ -32,7 +33,7 @@ use PSX\Http\Environment\HttpResponseInterface;
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @link    https://www.fusio-project.org/
  */
-abstract class PhpExecutorAbstract extends ActionAbstract
+abstract class PhpExecutorAbstract extends ActionAbstract implements ExcludedInterface
 {
     public function execute(string $file, RequestInterface $request, ContextInterface $context): HttpResponseInterface
     {
